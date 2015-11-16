@@ -14,7 +14,7 @@ class BIT {
 public:
     BIT(int n)
     {
-        v = vector<T>(n + 1, 0);
+        v = vector<T>(n, 0);
     }
 
     // returns sum of the range [0...b-1]
@@ -23,7 +23,7 @@ public:
         T sum = 0;
         for (b++; b; b -= (b & (-b)))
         {
-            sum += v[b];
+            sum += v[b-1];
         }
         return sum;
     }
@@ -38,9 +38,9 @@ public:
     // i.e., increment or decrement kth element by a value v
     void update(int idx, T value)
     {
-        for (idx++; idx < v.size(); idx += (idx & (-idx)))
+        for (idx++; idx <= v.size(); idx += (idx & (-idx)))
         {
-            v[idx] += value;
+            v[idx-1] += value;
         }
     }
 };
