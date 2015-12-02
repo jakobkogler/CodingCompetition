@@ -11,6 +11,7 @@ const long double PI = acos((long double)-1.0);
 
 typedef long long int lint;
 typedef long double ld;
+lint powmod(lint a,lint b) {lint res=1;a%=mod;for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
 
 
 int main() {
