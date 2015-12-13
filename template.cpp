@@ -14,6 +14,12 @@ typedef long long int lint;
 typedef long double ld;
 lint powmod(lint a,lint b, lint mod) {lint res=1;a%=mod;for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
 
+const int debug = 1;
+template <typename T>
+void DBG(vector<T> v){if(debug){for(T t:v)cout<<t<<"  ";cout<<endl;}}
+template <typename T>
+void DBG(T t){if(debug)cout<<t<<endl;}
+
 
 int main() {
     ios_base::sync_with_stdio(false);
