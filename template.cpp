@@ -8,10 +8,11 @@ using namespace std;
 
 const double EPS = 1e-4;
 const long double PI = acos((long double)-1.0);
+const long long int MOD = 1e9 + 7;
 
 typedef long long int lint;
 typedef long double ld;
-lint powmod(lint a,lint b) {lint res=1;a%=mod;for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
+lint powmod(lint a,lint b, lint mod) {lint res=1;a%=mod;for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
 
 
 int main() {
