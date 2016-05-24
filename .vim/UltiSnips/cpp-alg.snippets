@@ -1,0 +1,103 @@
+###
+### ALGORITHMS for coding contests
+### 
+
+snippet binary_search "Binary search" b
+int L = ${1:0};
+int R = ${2:INT_MAX};
+while (L + 1 < R) {
+    int M = (L + R) / 2;
+
+    $0
+
+    if (${3:true})
+        R = M;
+    else
+        L = M;
+}
+endsnippet
+
+snippet parse_graph "Parse an edge list into a adjecency list" b
+vector<vector<int>> ${1:adj}(${2:N});
+for (auto p : ${3:edges_vector}) {
+    $1[p.first].push_back(p.second);
+    $1[p.second].push_back(p.first);
+}
+$0
+endsnippet
+
+snippet "dp (\S+)" "Dynamic programming table" r
+`!p
+sizes = match.group(1).split(',')
+rep = len(sizes)
+snip.rv = 'vector<' * rep
+`${1:int}`!p
+snip.rv = '>' * rep
+` ${2:dp}`!p
+exp = ''
+for i in reversed(range(rep)):
+    exp = '(' + sizes[i] + ', ' + exp
+    if i:
+        rep2 = rep - i
+        exp = 'vector<' * rep2 + t[1] + '>' * rep2 + exp
+snip.rv = exp
+`${3:0}`!p
+snip.rv = ')' * rep`;
+$0
+endsnippet
+
+# Number Theory
+
+snippet prime_sieve "Sieve of Atkin" b
+vector<int> prime_sieve(int num) {
+    // num should be smaller than 8*1e8
+    vector<bool> m(num, false);
+
+    // main part of the sieve of atkin
+    auto root = ceil(sqrt(num));
+    for (auto x = 1; x <= root; ++x) {
+        for (auto y = 1; y <= root; ++y) {
+            auto x2 = x*x;
+            auto y2 = y*y;
+
+            auto n = (4*x2) + y2;
+            if (n < num && (n%12 == 1 || n%12 == 5)) {
+                m[n].flip();
+            }
+
+            n = (3*x2) + y2;
+            if (n < num && n%12 == 7) {
+                m[n].flip();
+            }
+
+            n = (3*x2) - y2;
+            if (x > y && n < num && n%12 == 11) {
+                m[n].flip();
+            }
+        }
+    }
+
+    // mark 2 & 3 as prime
+    m[2] = m[3] = true;
+
+    // mark all multiples of primes as non-prime
+    for (auto r = 5; r <= root; ++r) {
+        if (bool(m[r])) {
+            auto r2 = r*r;
+            for (auto i = r2; i < num; i += r2) {
+                m[i] = false;
+            }
+        }
+    }
+
+    vector<int> primes;
+    for (vector<bool>::size_type i = 1; i != m.size(); ++i) {
+        if (bool(m[i])) {
+            primes.push_back(i);
+        }
+    }
+
+    return primes;
+}
+$0
+endsnippet

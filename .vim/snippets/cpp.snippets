@@ -1,0 +1,411 @@
+###
+### Snippets from https://github.com/honza/vim-snippets 
+###
+## Main
+# main
+snippet main
+	int main(int argc, const char *argv[])
+	{
+		${0}
+		return 0;
+	}
+snippet mainc
+	int main(int argc, const char *argv[])
+	{
+		ios_base::sync_with_stdio(false);
+		cin.tie (NULL);
+		cout.precision(10);
+		cout << fixed;
+
+		${0}
+
+		return 0;
+	}
+##
+## Preprocessor
+# #include <...>
+snippet inc
+	#include <${1:stdio}.h>
+# #include "..."
+snippet Inc
+	#include "${1:`vim_snippets#Filename("$1.h")`}"
+# ifndef...define...endif
+snippet ndef
+	#ifndef $1
+	#define ${1:SYMBOL} ${2:value}
+	#endif /* ifndef $1 */
+# define
+snippet def
+	#define
+# ifdef...endif
+snippet ifdef
+	#ifdef ${1:FOO}
+		${2:#define }
+	#endif
+# if
+snippet #if
+	#if ${1:FOO}
+		${0}
+	#endif
+# header include guard
+snippet once
+	#ifndef ${1:`toupper(vim_snippets#Filename('$1_H', 'UNTITLED_H'))`}
+
+	#define $1
+
+	${0}
+
+	#endif /* end of include guard: $1 */
+##
+## Control Statements
+# if
+snippet if
+	if (${1:true}) {
+		${0}
+	}
+snippet ife
+	if (${1:true}) {
+		${2}
+	} else {
+		${0}
+	}
+# else
+snippet el
+	else {
+		${0}
+	}
+# else if
+snippet elif
+	else if (${1:true}) {
+		${0}
+	}
+# ifi
+snippet ifi
+	if (${1:true}) ${0};
+# ternary
+snippet t
+	${1:/* condition */} ? ${2:a} : ${3:b}
+# switch
+snippet switch
+	switch (${1:/* variable */}) {
+		case ${2:/* variable case */}:
+			${3}
+			${4:break;}${5}
+		default:
+			${6}
+	}
+# switch without default
+snippet switchndef
+	switch (${1:/* variable */}) {
+		case ${2:/* variable case */}:
+			${3}
+			${4:break;}${5}
+	}
+# case
+snippet case
+	case ${1:/* variable case */}:
+		${2}
+		${3:break;}
+snippet ret
+	return ${0};
+##
+## Loops
+# for (custom)
+snippet forr
+	for (${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
+		${0}
+	}
+# while
+snippet wh
+	while (${1:/* condition */}) {
+		${2}
+	}
+# do... while
+snippet do
+	do {
+		${2}
+	} while (${1:/* condition */});
+##
+## Functions
+# function definition
+snippet fun
+	${1:void} ${2:function_name}(${3})
+	{
+		${4}
+	}
+# function declaration
+snippet fund
+	${1:void} ${2:function_name}(${3});
+##
+## Types
+# typedef
+snippet td
+	typedef ${1:int} ${2:MyCustomType};
+# struct
+snippet st
+	struct ${1:`vim_snippets#Filename('$1_t', 'name')`} {
+		${2:/* data */}
+	}${3: /* optional variable list */};
+# typedef struct
+snippet tds
+	typedef struct ${2:_$1 }{
+		${3:/* data */}
+	} ${1:`vim_snippets#Filename('$1_t', 'name')`};
+
+snippet enum
+	enum ${1:name} { ${0} };
+# typedef enum
+snippet tde
+	typedef enum {
+		${1:/* data */}
+	} ${2:foo};
+##
+## Input/Output
+# printf
+snippet pr
+	printf("${1:%s}\n"${2});
+# fprintf (again, this isn't as nice as TextMate's version, but it works)
+snippet fpr
+	fprintf(${1:stderr}, "${2:%s}\n"${3});
+# getopt
+snippet getopt
+	int choice;
+	while (1)
+	{
+		static struct option long_options[] =
+		{
+			/* Use flags like so:
+			{"verbose", no_argument,	&verbose_flag, 'V'}*/
+			/* Argument styles: no_argument, required_argument, optional_argument */
+			{"version", no_argument,	0,	'v'},
+			{"help",	no_argument,	0,	'h'},
+			${1}
+			{0,0,0,0}
+		};
+
+		int option_index = 0;
+
+		/* Argument parameters:
+			no_argument: " "
+			required_argument: ":"
+			optional_argument: "::" */
+
+		choice = getopt_long( argc, argv, "vh",
+					long_options, &option_index);
+
+		if (choice == -1)
+			break;
+
+		switch( choice )
+		{
+			case 'v':
+				${2}
+				break;
+
+			case 'h':
+				${3}
+				break;
+
+			case '?':
+				/* getopt_long will have already printed an error */
+				break;
+
+			default:
+				/* Not sure how to get here... */
+				return EXIT_FAILURE;
+		}
+	}
+
+	/* Deal with non-option arguments here */
+	if ( optind < argc )
+	{
+		while ( optind < argc )
+		{
+			${0}
+		}
+	}
+##
+## Miscellaneous
+# This is kind of convenient
+snippet .
+	[${1}]
+###
+###
+###
+###
+###
+##
+## Preprocessor
+# #include <...>
+snippet inc
+	#include <${1:iostream}>
+snippet boostinc
+	#include <boost/${1:shared_ptr}.hpp>
+##
+## STL Collections
+# std::array
+snippet array
+	std::array<${1:T}, ${2:N}> ${3};
+# std::vector
+snippet vector
+	std::vector<${1:T}> ${2};
+# std::deque
+snippet deque
+	std::deque<${1:T}> ${2};
+# std::forward_list
+snippet flist
+	std::forward_list<${1:T}> ${2};
+# std::list
+snippet list
+	std::list<${1:T}> ${2};
+# std::set
+snippet set
+	std::set<${1:T}> ${2};
+# std::map
+snippet map
+	std::map<${1:Key}, ${2:T}> ${3};
+# std::multiset
+snippet mset
+	std::multiset<${1:T}> ${2};
+# std::multimap
+snippet mmap
+	std::multimap<${1:Key}, ${2:T}> ${3};
+# std::unordered_set
+snippet uset
+	std::unordered_set<${1:T}> ${2};
+# std::unordered_map
+snippet umap
+	std::unordered_map<${1:Key}, ${2:T}> ${3};
+# std::unordered_multiset
+snippet umset
+	std::unordered_multiset<${1:T}> ${2};
+# std::unordered_multimap
+snippet ummap
+	std::unordered_multimap<${1:Key}, ${2:T}> ${3};
+# std::stack
+snippet stack
+	std::stack<${1:T}> ${2};
+# std::queue
+snippet queue
+	std::queue<${1:T}> ${2};
+# std::priority_queue
+snippet pqueue
+	std::priority_queue<${1:T}> ${2};
+##
+## Access Modifiers
+# private
+snippet pri
+	private
+# protected
+snippet pro
+	protected
+# public
+snippet pub
+	public
+# friend
+snippet fr
+	friend
+# mutable
+snippet mu
+	mutable
+##
+## Class
+# class
+snippet cl
+	class ${1:`vim_snippets#Filename('$1', 'name')`}
+	{
+	public:
+		$1(${2});
+		~$1();
+
+	private:
+		${0:/* data */}
+	};
+# member function implementation
+snippet mfun
+	${4:void} ${1:`vim_snippets#Filename('$1', 'ClassName')`}::${2:memberFunction}(${3}) {
+		${0}
+	}
+# namespace
+snippet ns
+	namespace ${1:`vim_snippets#Filename('', 'my')`} {
+		${0}
+	} /* namespace $1 */
+##
+## Input/Output
+# std::cout
+snippet cout
+	std::cout << ${1} << std::endl;
+# std::cin
+snippet cin
+	std::cin >> ${1};
+##
+## Casts
+# static
+snippet sca
+	static_cast<${1:unsigned}>(${2:expr})${3}
+# dynamic
+snippet dca
+	dynamic_cast<${1:unsigned}>(${2:expr})${3}
+# reinterpret
+snippet rca
+	reinterpret_cast<${1:unsigned}>(${2:expr})${3}
+# const
+snippet cca
+	const_cast<${1:unsigned}>(${2:expr})${3}
+## Iteration
+# for i
+snippet fori
+	for (int ${1:i} = 0; $1 < ${2:count}; $2++) {
+		${0}
+	}
+
+# foreach
+snippet fore
+	for (${1:auto} ${2:i} : ${3:container}) {
+		${0}
+	}
+# iterator
+snippet iter
+	for (${1:std::vector}<${2:type}>::${3:const_iterator} ${4:i} = ${5:container}.begin(); $4 != $5.end(); ++$4) {
+		${6}
+	}
+
+# auto iterator
+snippet itera
+	for (auto ${1:i} = ${2:container}.begin(); $1 != $2.end(); ++$1) {
+		${3:std::cout << *$1 << std::endl;}
+	}
+##
+## Lambdas
+# lamda (one line)
+snippet ld
+	[${1}](${2}){${3}}
+# lambda (multi-line)
+snippet lld
+	[${1}](${2}){
+		${3}
+	}
+###
+###
+###
+snippet using
+	using namespace std;
+###
+###
+snippet binc
+	#include <bits/stdc++.h>
+###
+###
+snippet testloop
+	int test_count;
+	cin >> test_count;
+	for (int test = 1; test <= test_count; test++)
+	{
+		${0}
+	}
+###
+### Types
+###
+snippet pii
+	pair<int, int> 

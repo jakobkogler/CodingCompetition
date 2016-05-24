@@ -1,0 +1,28 @@
+###
+### C++ Snippets 
+### Mainly for coding contest
+###
+
+extends cpp-alg
+
+# Reads from stdin
+
+snippet readi "Read integers from input" b
+int ${1:N};
+cin >> ${1/(\s?,\s?)/ >> /g};
+$0
+endsnippet
+
+snippet readvi "Read a vector of ints" b
+vector<int> ${1:v}(${2:N});
+for (int idx = 0; idx < $2;  idx++)
+    cin >> $1[idx];
+$0
+endsnippet
+
+snippet readvpi "Read a vector of int-pairs" b
+vector<pair<int, int>> ${1:v}(${2:N});
+for (int idx = 0; idx < $2;  idx++)
+    cin >> $1[idx].first >> $1[idx].second;
+$0
+endsnippet
