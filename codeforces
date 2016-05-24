@@ -1,0 +1,41 @@
+#!/bin/sh
+CFNR="$1" 
+
+tmux has-session -t $CFNR
+if [ $? != 0 ]
+then
+    cd Documents
+    mkdir Codeforces
+    cd Codeforces
+    python ~/Documents/codeforces-parser/parse.py $CFNR
+    cd $CFNR
+    
+    tmux new-session -s $CFNR -n shell -d
+
+    for D in *; do
+        if [ -d "${D}" ]; then
+            PROBLEM="${D}"
+
+            tmux new-window -a -n $PROBLEM -t $CFNR
+            WINDOW="$CFNR:$PROBLEM"
+            tmux split-window -h -t $WINDOW
+            tmux split-window -v -t $WINDOW.1
+
+            for PANE_IDX in 0 1 2
+            do  
+                PANE="$WINDOW.$PANE_IDX"
+                tmux send-keys -t $PANE 'cd '$PROBLEM C-m
+                tmux send-keys -t $PANE 'clear' C-m
+            done
+
+            tmux send-keys -t $WINDOW.0 'vim '$PROBLEM'.cpp' C-m
+            tmux send-keys -t $WINDOW.2 'vim problem' C-m
+            tmux select-pane -t $WINDOW -L
+        fi
+    done
+
+
+fi
+
+tmux select-window -t $CFNR:A
+tmux attach -t $CFNR
