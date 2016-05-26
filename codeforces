@@ -4,12 +4,15 @@ CFNR="$1"
 tmux has-session -t $CFNR
 if [ $? != 0 ]
 then
-    cd Documents
-    mkdir Codeforces
-    cd Codeforces
-    python ~/Documents/codeforces-parser/parse.py $CFNR
-    cd $CFNR
+    mkdir -p ~/Documents/Codeforces 
+    cd ~/Documents/Codeforces
     
+    if [ ! -d "$CFNR" ]
+    then
+        python ~/Documents/codeforces-parser/parse.py $CFNR
+    fi
+
+    cd $CFNR
     tmux new-session -s $CFNR -n shell -d
 
     for D in *; do
@@ -33,7 +36,6 @@ then
             tmux select-pane -t $WINDOW -L
         fi
     done
-
 
 fi
 
