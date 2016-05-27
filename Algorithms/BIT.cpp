@@ -14,6 +14,13 @@ class BIT {
     public:
         BIT(int n) : v(vector<T>(n + 1, 0)) {}
 
+        BIT(vector<T> a) : BIT(a.size())
+        {
+            for (int i = 0; i < a.size(); i++) {
+                add(i, a[i]);
+            }
+        }
+
         // returns sum of the range [0...idx]
         T sum(int idx)
         {
@@ -64,6 +71,16 @@ int main()  {
     for (int i = 0; i < 9; i++) {
         cout << "[" << i << ", " << i + 1 << "]: " << bit.sum(i, i+1) << endl;
     }
-
+    cout << endl;
+    vector<int> vec{5, 4, 6, 10};
+    BIT<int> bit2(vec);
+    cout << "Create new BIT from array: ";
+    for (int i : vec)
+        cout << i << " ";
+    cout << endl;
+    cout << "[1, 3]: " << bit2.sum(1, 3) << endl;
+    cout << "[0, 1]: " << bit2.sum(0, 1) << endl;
+    cout << "[2, 2]: " << bit2.sum(2, 2) << endl;
+    
     return 0;
 }
