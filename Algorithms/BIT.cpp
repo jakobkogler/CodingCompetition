@@ -3,69 +3,67 @@
 
 using namespace std;
 
-// Binary Indexed Trees or Fenwick tree
-//
-// Update = O(log(n))
+// Binary Indexed Tree / Fenwick tree
+// Add = O(log(n))
 // Sum = O(log(n))
 template<typename T>
 class BIT {
-    vector<T> v;
+    private:
+        vector<T> v;
 
-public:
-    BIT(int n)
-    {
-        v = vector<T>(n, 0);
-    }
+    public:
+        BIT(int n) : v(vector<T>(n + 1, 0)) {}
 
-    // returns sum of the range [0...b-1]
-    T sum(int b)
-    {
-        T sum = 0;
-        for (b++; b; b -= (b & (-b)))
+        // returns sum of the range [0...idx]
+        T sum(int idx)
         {
-            sum += v[b-1];
+            T sum = 0;
+            for (idx++; idx; idx -= idx & -idx)
+            {
+                sum += v[idx];
+            }
+            return sum;
         }
-        return sum;
-    }
 
-    // returns sum of the range [a...b]
-    T sum(int a, int b)
-    {
-        return sum(b) - (a ? sum(a - 1) : 0);
-    }
-
-    // update value of the k-th element by v (v can be +ve/inc or -ve/dec)
-    // i.e., increment or decrement kth element by a value v
-    void update(int idx, T value)
-    {
-        for (idx++; idx <= v.size(); idx += (idx & (-idx)))
+        // returns sum of the range [a...b]
+        T sum(int a, int b)
         {
-            v[idx-1] += value;
+            return sum(b) - sum(a - 1);
         }
-    }
+
+        // add value to the idx-th element
+        void add(int idx, T value)
+        {
+            for (idx++; idx < v.size(); idx += idx & -idx)
+            {
+                v[idx] += value;
+            }
+        }
 };
 
 int main()  {
-    BIT<int> b(10);
+    BIT<int> bit(10);
     for (int i = 0; i < 10; i++)
     {
-        b.update(i, i);
+        bit.add(i, i);
     }
 
     cout << "Test values:" << endl;
     for (int i = 0; i < 10; i++)
     {
-        cout << b.sum(i, i) << endl;
+        cout << "[" << i << ", " << i << "]: " << bit.sum(i, i) << endl;
     }
     cout << endl;
 
-    cout << "Test sums from 0 to i:" << endl;
+    cout << "Test ranges:" << endl;
     for (int i = 0; i < 10; i++)
     {
-        cout << b.sum(i) << endl;
+        cout << "[0, " << i << "]: " << bit.sum(i) << endl;
     }
     cout << endl;
+    for (int i = 0; i < 9; i++) {
+        cout << "[" << i << ", " << i + 1 << "]: " << bit.sum(i, i+1) << endl;
+    }
 
-    cout << "Sum of first 5 elements: " << b.sum(5) << endl;
     return 0;
 }
