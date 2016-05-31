@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -16,8 +17,11 @@ class BIT {
 
         BIT(vector<T> a) : BIT(a.size())
         {
-            for (int i = 0; i < a.size(); i++) {
-                add(i, a[i]);
+            copy(a.begin(), a.end(), ++v.begin());
+            for (int i = 1; i <= a.size(); i++) {
+                int j = i + (i & -i);
+                if (j <= a.size())
+                    v[j] += v[i];
             }
         }
 
