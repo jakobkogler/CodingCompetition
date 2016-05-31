@@ -54,7 +54,7 @@ class SegmentTree
 
         void update(int idx, T val)
         {
-            idx += data.size() / 2 - 1;
+            idx += data.size() / 2;
             data[idx] = val;
 
             while (idx > 0)
@@ -72,7 +72,9 @@ int main()
     cout << st.minimum_of_range(0, 9) << endl;
     cout << st.minimum_of_range(8, 8) << endl;
 
-    st.update(4, 45);
+    cout << st.minimum_of_range(1, 3) << endl;
+    cout << st.minimum_of_range(3, 5) << endl;
+
     st.update(3, 100);
     cout << st.minimum_of_range(0, 9) << endl;
 
