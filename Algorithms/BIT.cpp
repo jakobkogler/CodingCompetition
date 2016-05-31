@@ -18,9 +18,9 @@ class BIT {
         BIT(vector<T> a) : BIT(a.size())
         {
             copy(a.begin(), a.end(), ++v.begin());
-            for (int i = 1; i <= a.size(); i++) {
+            for (int i = 1; i < v.size(); i++) {
                 int j = i + (i & -i);
-                if (j <= a.size())
+                if (j < v.size())
                     v[j] += v[i];
             }
         }
